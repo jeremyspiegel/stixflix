@@ -1,9 +1,10 @@
 {
     "name": "stixflix",
-    "description": "ontherecordapp",
+    "description": "stixflix",
     "version": "0.0.1",
     "private": true,
     "dependencies": {
-        "express": "*"
+        "express": "*",
+        "forever": "*"
     }
 }
