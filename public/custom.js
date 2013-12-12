@@ -30,7 +30,6 @@ function StixController($scope, $http, $modal) {
 
     var allMoviesPage = 1;
     $scope.page = function() {
-        console.log('page');
         if ( !$scope.data )
             return;
 
