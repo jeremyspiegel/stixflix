@@ -72,13 +72,13 @@ repeatGetMoviesOfType('upcoming');
 
 var allMovies = [];
 data.push( { type: 'All Movies', movies: allMovies } );
-db.each("select id, title, year, critics_score, audience_score, image from movies limit 100", function(err, row) {
+db.each("select id, title, year, critics_score, audience_score, image from movies limit 50", function(err, row) {
     allMovies.push(row);
 });
 
 app.get('/all_movies', function(request, response) {
     var movies = [];
-    db.each("select id, title, year, critics_score, audience_score, image from movies limit 100 offset ?", 100 * request.query.page, function(err, row) {
+    db.each("select id, title, year, critics_score, audience_score, image from movies limit 50 offset ?", 50 * request.query.page, function(err, row) {
         movies.push(row);
     }, function() {
         response.send(JSON.stringify(movies));
