@@ -37,11 +37,14 @@ function getMoviesOfType(type) {
     var movies = [];
     data.push( { type: prettify(type), movies: movies } );
     get('http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/' + type + '.json?page_limit=50&apikey=3h8aduxd8tx6k72gcmfmj3hw', function(movie) {
-        movies.push( {
-            title: movie.title,
-            critics_score: movie.ratings.critics_score,
-            audience_score: movie.ratings.audience_score,
-            image: movie.posters.profile } );
+        if ( movie.ratings.audience_score >= 2 * movie.ratings.critics_score && movie.ratings.critics_score > 0 && movie.ratings.audience_score >= 50 )
+            movies.push( {
+                title: movie.title,
+                year: movie.year,
+                id: movie.id,
+                critics_score: movie.ratings.critics_score,
+                audience_score: movie.ratings.audience_score,
+                image: movie.posters.profile } );
     });
 }
 
@@ -50,8 +53,6 @@ function getMoviesOfType(type) {
 // });
 
 getMoviesOfType('current_releases');
-getMoviesOfType('top_rentals');
-getMoviesOfType('new_releases');
 getMoviesOfType('upcoming');
 
 function prettify(string) {
