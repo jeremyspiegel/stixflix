@@ -1,10 +1,11 @@
-angular.module('app', ['ui.bootstrap']);
+angular.module('app', ['ui.bootstrap', 'infinite-scroll']);
 
 function StixController($scope, $http, $modal) {
+    $scope.activeTab = {};
+
     $http.get('/data')
     .success(function(data, status, headers, config) {
         $scope.data = data;
-        $scope.activeTab = $scope.data[0].type;
     })
     .error(function(data, status, headers, config) {
         $scope.error = data || "Request failed";
@@ -28,6 +29,20 @@ function StixController($scope, $http, $modal) {
             $scope.error = data || "Request failed";
         });
     };
+
+    var allMoviesPage = 1;
+    $scope.page = function() {
+        if ( !$scope.activeTab['All Movies'] )
+            return;
+
+        $http.get('/all_movies?page=' + ++allMoviesPage)
+        .success(function(data) {
+            $scope.data[2].movies = $scope.data[2].movies.concat(data);
+        })
+        .error(function(data, status, headers, config) {
+            $scope.error = data || "Request failed";
+        });
+    }
 }
 
 function ModalController($scope, movie) {
