@@ -1,8 +1,8 @@
 var express = require('express');
-var http = require('http');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('db');
 var app = express();
+var RottenTomatoes = require('./rotten_tomatoes.js');
 
 app.use(express.static(__dirname + '/public'));
 
@@ -17,29 +17,6 @@ app.get('/data', function(request, response) {
 
 app.listen(80);
 
-function get(uri, callback) {
-    http.get(uri, function(response) {
-        var json = '';
-        response.on('data', function(data) {
-            json += data;
-        });
-        response.on('end', function() {
-            var result = JSON.parse(json);
-            if ( result.error )
-            {
-                console.log(json);
-                get(uri, callback);
-            }
-            else
-            {
-                callback(result);
-            }
-        });
-    }).on('error', function(error) {
-        console.log('Error: ' + error.message);
-    });
-}
-
 function repeatGetMoviesOfType(type) {
     var movies = [];
     data.push( { type: prettify(type), movies: movies } );
@@ -50,7 +27,7 @@ function repeatGetMoviesOfType(type) {
 }
 
 function getMoviesOfType(type, movies) {
-    get('http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/' + type + '.json?page_limit=50&apikey=ah3k28e92uw29wedz8qgrsge', function(response) {
+    RottenTomatoes.get('http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/' + type + '.json?page_limit=50', function(response) {
         movies.length = 0;
         for (var i = 0; i < response.movies.length; i++) {
             var movie = response.movies[i];
