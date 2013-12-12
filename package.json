@@ -7,6 +7,6 @@
         "express": "*",
         "forever": "*",
         "sqlite3": "*",
-        "function-rate-limit": "*"
+        "limiter": "*"
     }
 }
