@@ -24,17 +24,34 @@ function get(uri, callback) {
             json += data;
         });
         response.on('end', function() {
-            callback(JSON.parse(json));
+            var result = JSON.parse(json);
+            if ( result.error )
+            {
+                console.log(json);
+                get(uri, callback);
+            }
+            else
+            {
+                callback(result);
+            }
         });
     }).on('error', function(error) {
         console.log('Error: ' + error.message);
     });
 }
 
-function getMoviesOfType(type) {
+function repeatGetMoviesOfType(type) {
     var movies = [];
     data.push( { type: prettify(type), movies: movies } );
-    get('http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/' + type + '.json?page_limit=50&apikey=3h8aduxd8tx6k72gcmfmj3hw', function(response) {
+    getMoviesOfType(type, movies);
+    setInterval(function() {
+        getMoviesOfType(type, movies);
+    }, 1000 * 60 * 60);
+}
+
+function getMoviesOfType(type, movies) {
+    get('http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/' + type + '.json?page_limit=50&apikey=ah3k28e92uw29wedz8qgrsge', function(response) {
+        movies.length = 0;
         for (var i = 0; i < response.movies.length; i++) {
             var movie = response.movies[i];
             if ( movie.ratings.audience_score >= 2 * movie.ratings.critics_score && movie.ratings.critics_score > 0 && movie.ratings.audience_score >= 50 )
@@ -50,12 +67,8 @@ function getMoviesOfType(type) {
     });
 }
 
-// get('http://api.rottentomatoes.com/api/public/v1.0/movies.json?q=a&page_limit=50&page=1&apikey=3h8aduxd8tx6k72gcmfmj3hw', function(movie) {
-//     console.log(movie.title + ' - ' + JSON.stringify(movie.release_dates));
-// });
-
-getMoviesOfType('current_releases');
-getMoviesOfType('upcoming');
+repeatGetMoviesOfType('current_releases');
+repeatGetMoviesOfType('upcoming');
 
 var allMovies = [];
 data.push( { type: 'All Movies', movies: allMovies } );
