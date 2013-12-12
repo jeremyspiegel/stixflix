@@ -1,0 +1,11 @@
+.movie {
+    margin: 10px;
+    width: 120px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+}
+
+a {
+    cursor: pointer
+}
