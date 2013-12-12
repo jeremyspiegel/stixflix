@@ -5,6 +5,8 @@
     "private": true,
     "dependencies": {
         "express": "*",
-        "forever": "*"
+        "forever": "*",
+        "sqlite3": "*",
+        "function-rate-limit": "*"
     }
 }
