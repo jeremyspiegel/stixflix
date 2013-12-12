@@ -1,3 +1,1 @@
-stixflix
-========
-See stixflix.us
+Stixflix are movies where the audience rating is at least 50% and at least twice the critic rating, which is probably what you want when you're eating cheesey stix at 3am. See [stixflix.us](stixflix.us).
