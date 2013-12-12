@@ -24,6 +24,14 @@ function callback(result) {
 }
 
 for (var i = 'a'.charCodeAt(0); i <= 'z'.charCodeAt(0); ++i) {
-    var letter = String.fromCharCode(i);
-    RottenTomatoes.get('http://api.rottentomatoes.com/api/public/v1.0/movies.json?q=' + letter + '&page_limit=50', callback);
+    for (var j = 'a'.charCodeAt(0); j <= 'z'.charCodeAt(0); ++j) {
+        var q = String.fromCharCode(i) + String.fromCharCode(j);
+        RottenTomatoes.get('http://api.rottentomatoes.com/api/public/v1.0/movies.json?q=' + q + '&page_limit=50', callback);
+        // (function(q) {
+        //     RottenTomatoes.get('http://api.rottentomatoes.com/api/public/v1.0/movies.json?q=' + q + '&page_limit=50', function(result) {
+        //         if ( result.total / 50 + 1 >= 25 )
+        //             console.log(q + ' ' + result.total );
+        //     });
+        // })(q);
+    }
 }
