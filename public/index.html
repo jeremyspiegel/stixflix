@@ -10,20 +10,19 @@
         <link rel="icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
-        <div class="container" ng-controller="StixController">
+        <div class="container" ng-controller="StixController" infinite-scroll="page()">
             <h1>Stixflix</h1>
             <p>Stixflix are movies where the audience rating is at least 50% and at least twice the critic rating, which is probably what you want when you're eating cheesey stix at 3am.</p>
             {{error}}
-            <tabset infinite-scroll="page()" infinite-scroll-distance="0">
-                <tab ng-repeat="type in data" heading="{{type.type}}" active="activeTab[type.type]">
-                    <a ng-repeat="movie in type.movies" ng-click="onclick(movie)" class="movie">
-                        <img src="{{movie.image}}" />
-                        <div>{{movie.title}}</div>
-                        <div>Critics: {{movie.critics_score}}%</div>
-                        <div>Audience: {{movie.audience_score}}%</div>
-                    </a>
-                </tab>
-            </tabset>
+            <div ng-repeat="type in data">
+                <h3 class="label label-default">{{type.type}}</h3><br>
+                <a ng-repeat="movie in type.movies" ng-click="onclick(movie)" class="movie">
+                    <img src="{{movie.image}}" />
+                    <div>{{movie.title}}</div>
+                    <div>Critics: {{movie.critics_score}}%</div>
+                    <div>Audience: {{movie.audience_score}}%</div>
+                </a>
+            </div>
         </div>
         <script src="//code.jquery.com/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
